@@ -17,7 +17,7 @@ after_success:
   echo "$DOCKER_ID"
   echo "$DOCKER_PASSWORD"
   # Use travis encrypted environment variables
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push the above created images to docker hub.
   - docker push neeraj76/multi-client
   - docker push neeraj76/multi-nginx
