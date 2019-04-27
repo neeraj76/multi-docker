@@ -13,11 +13,14 @@ after_success:
   - docker build -t neeraj76/multi-nginx ./nginx
   - docker build -t neeraj76/multi-server ./server
   - docker build -t neeraj76/multi-worker ./worker
+  
   # Log in to docker via CLI
   echo "$DOCKER_ID"
   echo "$DOCKER_PASSWORD"
+
   # Use travis encrypted environment variables
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  
   # Push the above created images to docker hub.
   - docker push neeraj76/multi-client
   - docker push neeraj76/multi-nginx
