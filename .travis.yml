@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t neeraj76/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run neeraj76/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t neeraj76/multi-client ./client
+  - docker build -t neeraj76/multi-nginx ./nginx
+  - docker build -t neeraj76/multi-server ./server
+  - docker build -t neeraj76/multi-worker ./worker
+  # Log in to docker via CLI
+  # Use travis encrypted environment variables
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
+  # Push the above created images to docker hub.
+  - docker push neeraj76/multi-client
+  - docker push neeraj76/multi-nginx
+  - docker push neeraj76/multi-server
+  - docker push neeraj76/multi-worker
